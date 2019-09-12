@@ -1,0 +1,450 @@
+
+Persist Logs
+Disable cache
+	
+	
+	
+	
+	
+	
+	
+	
+200
+	GET	
+csku.kutztown.edu	PSSTYLEREQ_1.css	stylesheet	css	cached	104.94 KB	
+200
+	GET	
+csku.kutztown.edu	PSSTYLEREQ_1.css	stylesheet	css	cached	104.94 KB	
+200
+	GET	
+csku.kutztown.edu	PSSTYLEREQ_1.css	stylesheet	css	cached	104.94 KB	
+200
+	GET	
+csku.kutztown.edu	PSSTYLEDEF_SWAN_1.css	stylesheet	css	cached	209.45 KB	
+200
+	GET	
+csku.kutztown.edu	PZ_M000_PRD_CSS_19.css	stylesheet	css	cached	28.68 KB	
+200
+	GET	
+csku.kutztown.edu	PZ_M000_PRD_CSS_19.css	stylesheet	css	cached	28.68 KB	
+200
+	GET	
+csku.kutztown.edu	PSSTYLEDEF_SWAN_1.css	stylesheet	css	cached	209.45 KB	
+200
+	POST	
+csku.kutztown.edu	SA_LEARNING_MANAGEMENT.SS_CLASS_ROSTER.GBL	xhr	xml	2.61 KB	6.08 KB	
+326 ms
+200
+	POST	
+csku.kutztown.edu	SA_LEARNING_MANAGEMENT.SS_CLASS_ROSTER.GBL	xhr	xml	2.71 KB	6.54 KB	
+343 ms
+9 requests
+803.71 KB / 5.32 KB transferred
+Finish: 5.88 min
+	
+Response payload	
+
+1
+
+<?xml version='1.0' encoding='utf-8' ?>
+
+2
+
+<PAGE id='SS_FAC_CLASS_ROST'><GENSCRIPT id='script'><![CDATA[var oWin=window;
+
+3
+
+ var oDoc = window.document;
+
+4
+
+oWin.PIA_KEYSTRUCT={CLASS_NBR:"3248",INSTITUTION:"KTOWN",INSTRUCTOR_ID:"002111340",STRM:"2198"};
+
+5
+
+ try { 
+
+6
+
+ var tframe = top.frames['ptcxmiframe'] || top.frames['NAV']; 
+
+7
+
+ if (tframe && !isCrossDomain(tframe)) 
+
+8
+
+ { if (tframe.ptcxmProcess) 
+
+9
+
+  { tframe.ptcxmProcess(); } 
+
+10
+
+   else if (tframe.epplnProcess) 
+
+11
+
+ { tframe.epplnProcess(); } 
+
+12
+
+} 
+
+13
+
+  } catch (ex) {} 
+
+14
+
+ oWin.strCurrUrl='https://csku.kutztown.edu/psp/csprd/EMPLOYEE/SA/c/SA_LEARNING_MANAGEMENT.SS_CLASS_ROSTER.GBL?CLASS_NBR=3248&INSTITUTION=KTOWN&INSTRUCTOR_ID=002111340&STRM=2198&PAGE=SS_FAC_CLASS_ROST';
+
+15
+
+oWin.strReqURL='https://csku.kutztown.edu/psp/csprd/EMPLOYEE/SA/c/SA_LEARNING_MANAGEMENT.SS_CLASS_ROSTER.GBL?CLASS_NBR=3248&INSTITUTION=KTOWN&INSTRUCTOR_ID=002111340&STRM=2198&PAGE=SS_FAC_CLASS_ROST&';
+
+16
+
+if ((typeof window.modWin == 'undefined' || window.modWin == null) && (typeof window.modWinClosed == 'undefined' || window.modWinClosed == null) && window.winParent_win0) {oWin=window.winParent_win0; oDoc=oWin.document;}
+
+17
+
+]]></GENSCRIPT><GENSCRIPT id='onloadScript'><![CDATA[g_bAccessibilityMode=false;
+
+18
+
+var actn='';
+
+19
+
+var oWin=window; var oDoc=window.document;
+
+20
+
+if (!isModeless(MTop().modId) && (typeof window.modWin == 'undefined' || window.modWin == null) && (typeof window.modWinClosed == 'undefined' || window.modWinClosed == null) && window.winParent) 
+
+21
+
+ {oWin=window.winParent; oDoc=oWin.document;}
+
+22
+
+actn=oDoc.win0.ICAction.value;
+
+23
+
+oDoc.win0.ICAction.value='None';
+
+24
+
+oDoc.win0.ICResubmit.value='0';
+
+25
+
+oWin.nResubmit='0';
+
+26
+
+oDoc.win0.ICStateNum.value=8;initVars_win0();
+
+27
+
+if (typeof resetVars_win0 == "function")resetVars_win0();
+
+28
+
+oDoc.win0.ICFocus.value='';
+
+29
+
+setupTimeout2();
+
+30
+
+if (oDoc.win0.ICTypeAheadID) oDoc.win0.ICTypeAheadID.value='';
+
+31
+
+ptEvent.add(window,'scroll',positionWAIT_win0);
+
+32
+
+ptCommonObj2.generateABNSearchResults(document.win0);
+
+33
+
+getGblSrchPageNum(actn);
+
+34
+
+if (gSrchRsltPageNum <= 5) getAllRelatedActions();
+
+35
+
+​
+
+36
+
+if (typeof(myAppsWindowOpenJS) != 'undefined' && myAppsWindowOpenJS != null && myAppsWindowOpenJS != '')
+
+37
+
+ {
+
+38
+
+try {eval(myAppsWindowOpenJS);} catch(e) {}
+
+39
+
+  myAppsWindowOpenJS=null;
+
+40
+
+}
+
+41
+
+if (typeof(ptLongEditCounter) != 'undefined' && ptLongEditCounter != null)
+
+42
+
+   ptLongEditCounter.onLoadLongEditCounter();
+
+43
+
+ResetGlyph_win0();
+
+44
+
+self.scroll(0,408);
+
+45
+
+if (typeof ptGridObj_win0 != 'undefined' && ptGridObj_win0)
+
+46
+
+ ptGridObj_win0.clearGridArr();
+
+47
+
+objToBeFocus = null;
+
+48
+
+if (typeof oWin == 'undefined') setEventHandlers_win0('ICFirstAnchor_win0', 'ICLastAnchor_win0', false);
+
+49
+
+ else
+
+50
+
+ oWin.setEventHandlers_win0('ICFirstAnchor_win0', 'ICLastAnchor_win0', false);
+
+51
+
+setFocus_win0('CLASS_ROSTER_VW$hexcel$0',-1);
+
+52
+
+ptLoadingStatus_empty(0);
+
+53
+
+setupTimeout2();
+
+54
+
+processing_win0(0,3000);]]></GENSCRIPT><GENSCRIPT id='onloadScript'><![CDATA[window.open('https://csku.kutztown.edu/psc/csprd/view/vCvtXKFdi5hLwzC0J1J4V728lFxLt.0sBTsV0L.m8nJdlAPSv.uHB_C.8lHFrvA9MsFmYBk-/ps.xls','','');]]></GENSCRIPT>
+
+55
+
+<FIELD id='win0divDERIVED_SSTSNAV_SSTS_NAV_TABS'  ><![CDATA[<div style="width:604px; " >
+
+56
+
+<!-- Begin HTML Area Name Undisclosed -->
+
+57
+
+<div id=PSTAB>
+
+58
+
+<table border="0" cellspacing="0" cellpadding="0"><tr valign='bottom' role='tablist'><td nowrap="nowrap" id="selected"><a href="/psc/csprd/EMPLOYEE/SA/c/SA_LEARNING_MANAGEMENT.SS_FACULTY.GBL?Page=INSTR_CLASS3&Action=A" tabindex=23 aria-selected="true" style="white-space:nowrap;float:right;" role="tab"><span>Faculty Center</span></a></td><td><a role="tab" href="/psc/csprd/EMPLOYEE/SA/c/SSR_ADVISEE_OVRD.SSS_ADVISEE_LIST.GBL?Page=SSS_ADVISEE_LIST&Action=U" tabindex=23 accesskey="A"><span style="font-size:11px; white-space: nowrap;"><abbr class="PTUNDERLINE">A</abbr>dvisor Center</span></a></td><td><a role="tab" href="/psc/csprd/EMPLOYEE/SA/c/SA_LEARNING_MANAGEMENT.CLASS_SEARCH.GBL?Page=SSR_CLSRCH_ENTRY&Action=U" tabindex=23 accesskey="S"><span style="font-size:11px; white-space: nowrap;"><abbr class="PTUNDERLINE">S</abbr>earch</span></a></td><td class="PSBOTTOMLINE" nowrap="nowrap" vAlign="bottom" width="100%"></td></tr></tr></table>
+
+59
+
+</div>
+
+60
+
+<!-- End HTML Area -->
+
+61
+
+</div>
+
+62
+
+]]></FIELD>
+
+63
+
+<FIELD id='win0divDERIVED_SSTSNAV_SSTS_NAV_SUBTABS'  ><![CDATA[<div style="width:604px; " >
+
+64
+
+<!-- Begin HTML Area Name Undisclosed -->
+
+65
+
+<table border="0" cellspacing="0" cellpadding="0" bgcolor="#F1F5F6"><tr><td>&nbsp;</td>
+
+66
+
+<td><a href="/psc/csprd/EMPLOYEE/SA/c/SA_LEARNING_MANAGEMENT.SS_FACULTY.GBL?Page=INSTR_CLASS3&Action=A" class="PSHYPERLINK" tabindex=25 accesskey="M"><span style="font-size:11px; white-space: nowrap;"><abbr class="PTUNDERLINE">M</abbr>y Schedule</span></a></td>
+
+67
+
+<td>&nbsp;</td><td>&nbsp;</td>
+
+68
+
+<td><a><span style="font-size:11px; white-space: nowrap;">|</span></a></td>
+
+69
+
+<td>&nbsp;</td><td>&nbsp;</td>
+
+70
+
+<td><a href="/psc/csprd/EMPLOYEE/SA/c/SA_LEARNING_MANAGEMENT.SS_CLASS_ROSTER.GBL?Page=SS_FAC_CLASS_ROST&Action=A" class="PTBREADCRUMBCUR" tabindex=25  ><span style="font-size:11px; white-space: nowrap;">Class Roster</span></a></td>
+
+71
+
+<td>&nbsp;</td><td>&nbsp;</td>
+
+72
+
+<td><a><span style="font-size:11px; white-space: nowrap;">|</span></a></td>
+
+73
+
+<td>&nbsp;</td><td>&nbsp;</td>
+
+74
+
+<td><a href="/psc/csprd/EMPLOYEE/SA/c/SA_LEARNING_MANAGEMENT.SS_GRADE_RSTR.GBL?Page=SS_GRADE_ROSTER&Action=A" class="PSHYPERLINK" tabindex=25 accesskey="G"><span style="font-size:11px; white-space: nowrap;"><abbr class="PTUNDERLINE">G</abbr>rade Roster</span></a></td>
+
+75
+
+<td>&nbsp;</td></tr></tr></table>
+
+76
+
+<!-- End HTML Area -->
+
+77
+
+</div>
+
+78
+
+]]></FIELD>
+
+79
+
+<FIELD id='win0divEMAIL_LINK$0'  ><![CDATA[<span id='EMAIL_LINK$span$0'  class='PSHYPERLINK'  title='Send E-mail' ><a name='EMAIL_LINK$0' id='EMAIL_LINK$0'  ptlinktgt='pt_replace' tabindex='209' onfocus='doFocus_win0(this,false,true);' href="mailto:cbran139@live.kutztown.edu"   class='PSHYPERLINK' >Brandt,Caleb B</a></span>
+
+80
+
+]]></FIELD>
+
+81
+
+<FIELD id='win0divDERIVED_SSTSNAV_SSS_FOOTER_LINKS'  ><![CDATA[<div style="width:620px; " >
+
+82
+
+<!-- Begin HTML Area Name Undisclosed -->
+
+83
+
+<img src="/cs/csprd/cache855/PS_SCROLL_TOP_VER_ICN_1.gif" alt="Go to top icon" style="margin-top:7px;" border="0"/><a href="#" class="PSHYPERLINK" style="white-space:nowrap;" tabindex=481><span>Go to top</span></a>
+
+84
+
+<!-- End HTML Area -->
+
+85
+
+</div>
+
+86
+
+]]></FIELD>
+
+87
+
+<SYSVAR id='sysvar'><![CDATA[nMaxSavedStates=5;
+
+88
+
+sHistURL="https://csku.kutztown.edu/psc/csprd/EMPLOYEE/SA/c/SA_LEARNING_MANAGEMENT.SS_CLASS_ROSTER.GBL?page=SS_FAC_CLASS_ROST&";
+
+89
+
+bICList = false;
+
+90
+
+bCloseModal = true;
+
+91
+
+bHtml5Doc = true;
+
+92
+
+bClearBackState=false;
+
+93
+
+bPageTransfered=false;
+
+94
+
+bTransferAnimate=false;
+
+95
+
+UpdateHistory('', '', 'returntolastpage@0', 'SS_FAC_CLASS_ROST', 1, '', null, 0);
+
+96
+
+bCleanHtml = false;
+
+97
+
+bDefer = true;
+
+98
+
+bCDATA = false;
+
+99
+
+bAccessibleLayout = false;
+
+100
+
+bGenDomInfo = false;
+
+101
+
+]]></SYSVAR></PAGE>
+
