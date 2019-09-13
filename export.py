@@ -1,6 +1,7 @@
 import getpass
 import os
 import time
+import yaml # pip install pyyaml
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -8,20 +9,33 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
+def data_config(yaml_file : str):
+    with open(yaml_file, 'r') as stream:
+        config = yaml.load(stream, Loader=yaml.FullLoader)
+
+    if 'username' not in config or config['username'] == None:
+        config['username'] = input("Enter KU username >")
+
+    if 'password' not in config or config['password'] == None:
+        config['password'] = getpass.getpass("Enter KU password >")
+
+    return config
+
 def main():
 
     # Config Stuff
 
-    username = input("Enter KU username >")
-    password = getpass.getpass("Enter KU password >")
+    config = data_config('data.yaml')
+
+    username = config['username']
+    password = config['password']
 
     # Under the teaching schedule table, the class rosters start at 0 and goto n
     classRosterID = "CLASSROSTER$"
     classRosterNum = 0
 
     # Download Directory (Change for UNIX & Windows Machines)
-    downloadPath = "D:\\Patrick\\Desktop\\Rosters"
-
+    downloadPath = config['download_path']
 
     # Begin Script....
     if not os.path.exists(downloadPath):
@@ -49,7 +63,7 @@ def main():
 
     driver = webdriver.Chrome(executable_path='./drivers/chromedriver.exe', chrome_options=chromeOptions)
 
-    driver.get("https://myku.kutztown.edu")
+    driver.get(config['base_uri'])
 
 
     # Wait for the username field to appear
