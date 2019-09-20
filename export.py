@@ -20,7 +20,7 @@ def main():
     classRosterNum = 0
 
     # Download Directory (Change for UNIX & Windows Machines)
-    downloadPath = "D:\\Patrick\\Desktop\\Rosters"
+    downloadPath = "~/Desktop/Roster"
 
 
     # Begin Script....
@@ -47,7 +47,7 @@ def main():
     prefs = {"download.default_directory" : downloadPath}
     chromeOptions.add_experimental_option("prefs", prefs)
 
-    driver = webdriver.Chrome(executable_path='./drivers/chromedriver.exe', chrome_options=chromeOptions)
+    driver = webdriver.Chrome(executable_path='./drivers/geckodriver', chrome_options=chromeOptions)
 
     driver.get("https://myku.kutztown.edu")
 
@@ -84,7 +84,8 @@ def main():
     while True:
         try: 
             # Go through the classes in the table
-            driver.find_element_by_id(classRosterID + str(classRosterNum)).click()
+            classBtn = wait.until(EC.presence_of_element_located((By.ID, classRosterID + str(classRosterNum))))
+            classBtn.click()
 
             # Grab the class LONG NAME to save the file as
             className = wait.until(EC.presence_of_element_located((By.ID, "DERIVED_SSR_FC_SSR_CLASSNAME_LONG")))
