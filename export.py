@@ -1,8 +1,16 @@
 import getpass
 import os
 import time
-import yaml # pip install pyyaml
+import yaml 
+import re
+from pprint import pprint
+
+import pandas as pd
+
+# from bs4 import BeautifulSoup as bs
+
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -41,27 +49,23 @@ def main():
     if not os.path.exists(downloadPath):
         os.mkdir(downloadPath)
 
-    # Setup firefox profile to automatically save the "excel" files
-    # Couldn't figure out how to set Firefox to not prompt on file download
-    # Have to use chrome sadly
-
-    # fp = webdriver.FirefoxProfile()
-    # fp.set_preference("browser.download.folderList", 2)
-    # fp.set_preference("browser.download.manger.showWhenStarting", False)
-    # fp.set_preference("borwser.download.dir", downloadPath)
-    # fp.set_preference("browser.helperApp.neverAsk.saveToDisk", "application/vnd.ms-excel")
 
     # Create the web driver (Firefox)
-    # driver = webdriver.Firefox(firefox_profile=fp,executable_path='./drivers/geckodriver.exe')
+
+    options = Options()
+    options.headless = True
+
+    driver = webdriver.Firefox(options=options,
+            executable_path=os.path.join(os.getcwd(), 'drivers/geckodriver'))
 
 
     # Setup driver and chrome profile
-    chromeOptions = webdriver.ChromeOptions()
+    # chromeOptions = webdriver.ChromeOptions()
 
-    prefs = {"download.default_directory" : downloadPath}
-    chromeOptions.add_experimental_option("prefs", prefs)
+    # prefs = {"download.default_directory" : downloadPath}
+    # chromeOptions.add_experimental_option("prefs", prefs)
 
-    driver = webdriver.Chrome(executable_path='./drivers/geckodriver', chrome_options=chromeOptions)
+    # driver = webdriver.Chrome(executable_path='./drivers/geckodriver', chrome_options=chromeOptions)
 
     driver.get(config['base_uri'])
 
@@ -104,23 +108,45 @@ def main():
             # Grab the class LONG NAME to save the file as
             className = wait.until(EC.presence_of_element_located((By.ID, "DERIVED_SSR_FC_SSR_CLASSNAME_LONG")))
             className = className.text
-            className = className.replace(' ', '_') + "_ROSTER.xls"
+            className = className.replace(' ', '_') + "_ROSTER.csv"
 
 
-            # Download the "Excel" file
-            driver.find_element_by_id("CLASS_ROSTER_VW$hexcel$0").click()
+            classTable = driver.find_element_by_xpath("//table[@id='CLASS_ROSTER_VW$scroll$0']//table[@class='PSLEVEL1GRID']")
+
+            # tableSoup = bs(classTable.get_attribute('innerHTML'), 'html.parser')
+
+            # with open(os.path.join(downloadPath, className), 'w') as f:
+            #     f.write(classTable.get_attribute('innerHTML'))
+
+            tableData = pd.read_html(classTable.get_attribute('outerHTML'))
+
+            emailElms = driver.find_elements_by_xpath("//a[starts-with(@id, 'EMAIL_LINK$')]")
+            emailList = []
+
+            for elm in emailElms:
+                email = elm.get_attribute("href")
+                email = email.replace("mailto:", "")
+                emailList.append(email)
+
+            emailSeries = pd.Series(emailList)
+            
+            tableData = tableData[0]
+            tableData['emails'] = emailSeries
+
+            tableData.to_csv(os.path.join(downloadPath, className))
+
+            # os.rename(os.path.join(downloadPath, "ps.xls"),
+            #             os.path.join(downloadPath, className))
 
             time.sleep(3)
-
-            os.rename(os.path.join(downloadPath, "ps.xls"),
-                        os.path.join(downloadPath, className))
 
             # Click the change class button and go to the next class
             classRosterNum += 1
             driver.find_element_by_id("DERIVED_SSR_FC_SSS_CHG_CLS_LINK").click()
             
 
-        except NoSuchElementException:
+        except NoSuchElementException as e:
+            print("Error:", e)
             print("No more classes found...")
             print("Script closing")
             break
