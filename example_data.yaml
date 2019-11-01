@@ -1,0 +1,7 @@
+# Hide your personal info with flex tape!
+# I mean, YAML
+username: 
+password: 
+download_path: # no need to escape backslashes in paths in yaml :-)
+base_uri: 
+semester: 

@@ -1,5 +1,6 @@
 import getpass
 import os
+import sys
 import time
 import yaml 
 import re
@@ -18,8 +19,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
 def data_config(yaml_file : str):
-    with open(yaml_file, 'r') as stream:
-        config = yaml.load(stream, Loader=yaml.FullLoader)
+    try:
+        with open(yaml_file, 'r') as stream:
+            config = yaml.load(stream, Loader=yaml.FullLoader)
+    except FileNotFoundError:
+        print("Make sure your config.yaml file exists")
+        print("You can just copy the example_data.yaml and fill it in.")
+        sys.exit(0)
 
     if 'username' not in config or config['username'] == None:
         config['username'] = input("Enter KU username >")
@@ -33,7 +39,7 @@ def main():
 
     # Config Stuff
 
-    config = data_config('data.yaml')
+    config = data_config('config.yaml')
 
     username = config['username']
     password = config['password']
@@ -92,6 +98,38 @@ def main():
     # The content in "Faculty Center" is served via an iframe.
     # Switch the driver to that frame
     driver.switch_to.frame(driver.find_element_by_id("ptifrmtgtframe"))
+
+    # Make sure in the same semester as configured in yaml script
+    semesterText = driver.find_element_by_id("DERIVED_SSS_FCT_SSR_STDNTKEY_DESCR$9$").get_attribute("innerText")
+    semesterText = semesterText.split("|")[0].rstrip()
+
+    # Semester doesn't match, change
+    if semesterText != config["semester"]:
+        driver.find_element_by_id("DERIVED_SSS_FCT_SSS_TERM_LINK").click()
+        # Find semester text in the table of semesters
+        # tr = driver.find_element_by_xpath("//span[contains(text(), '" + config["semester"] + "')]")
+
+        semesterFound = False
+
+        # Javascript has multiple tables here, you'll have to drill down the right level...
+
+
+        tableRows = driver.find_elements_by_tag_name("tr");
+        for tableRow in tableRows:
+            td = tableRow.find_elements_by_id("td")
+            txt = td[1].find_elements_by_tag_name("span").get_attribute("innerText")
+
+            if txt == config["semester"]:
+                td[0].find_elements_by_tag_name("input").click()
+                semesterFound = True
+                break
+        
+        if semesterFound == False:
+            print("Semester not found in table, confirm spelling is correct")
+            sys.exit(0)
+
+
+    sys.exit(0)
 
     # In the "My Teaching Schedule" loop through the classes & sections
     # As of 09/11/2019, the first TR containing a class is ID'd as "trINSTR_CLASS_VW$0_row1"
