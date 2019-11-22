@@ -16,7 +16,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 def data_config(yaml_file : str):
     try:
@@ -58,20 +58,14 @@ def main():
 
     # Create the web driver (Firefox)
 
+    # Firefox only runs in headless mode for some reason and I can't be bothered to try and figure it out anymore
     options = Options()
     options.headless = True
 
+    print(os.path.join(os.getcwd(), 'drivers/geckodriver'))
     driver = webdriver.Firefox(options=options,
             executable_path=os.path.join(os.getcwd(), 'drivers/geckodriver'))
 
-
-    # Setup driver and chrome profile
-    # chromeOptions = webdriver.ChromeOptions()
-
-    # prefs = {"download.default_directory" : downloadPath}
-    # chromeOptions.add_experimental_option("prefs", prefs)
-
-    # driver = webdriver.Chrome(executable_path='./drivers/geckodriver', chrome_options=chromeOptions)
 
     driver.get(config['base_uri'])
 
@@ -105,31 +99,35 @@ def main():
 
     # Semester doesn't match, change
     if semesterText != config["semester"]:
+        print("Selecting correct semester")
         driver.find_element_by_id("DERIVED_SSS_FCT_SSS_TERM_LINK").click()
-        # Find semester text in the table of semesters
-        # tr = driver.find_element_by_xpath("//span[contains(text(), '" + config["semester"] + "')]")
 
+        semesterTable = driver.find_element_by_class_name("PSLEVEL1GRID")
+        rowInter = 0
         semesterFound = False
 
-        # Javascript has multiple tables here, you'll have to drill down the right level...
+        # Loop through semester table and find matching semester name
+        for row in semesterTable.find_elements_by_tag_name("tr"):
+            # The first "row" in the table messes it up, just do a try catch
+            try:
+                row_text = row.find_element_by_id("TERM_VAL$" + str(rowInter)).get_attribute('innerText')
+            except NoSuchElementException:
+                continue 
 
-
-        tableRows = driver.find_elements_by_tag_name("tr");
-        for tableRow in tableRows:
-            td = tableRow.find_elements_by_id("td")
-            txt = td[1].find_elements_by_tag_name("span").get_attribute("innerText")
-
-            if txt == config["semester"]:
-                td[0].find_elements_by_tag_name("input").click()
+            # print("ROW TEXT: ", row_text)
+            if row_text == config["semester"]:
+                # Semester found, click the radio button and break the loop
+                row.find_element_by_id("SSR_DUMMY_RECV1$sels$" + str(rowInter) + "$$0").click()
                 semesterFound = True
                 break
+            else:
+                rowInter += 1
         
         if semesterFound == False:
             print("Semester not found in table, confirm spelling is correct")
-            sys.exit(0)
-
-
-    sys.exit(0)
+    
+        # Click "continue"
+        driver.find_element_by_id("DERIVED_SSS_FCT_SSR_PB_GO$254$").click()
 
     # In the "My Teaching Schedule" loop through the classes & sections
     # As of 09/11/2019, the first TR containing a class is ID'd as "trINSTR_CLASS_VW$0_row1"
@@ -182,6 +180,12 @@ def main():
             classRosterNum += 1
             driver.find_element_by_id("DERIVED_SSR_FC_SSS_CHG_CLS_LINK").click()
             
+        # TODO: I changed to wait until the class was found for some reason instea of just clicking on it.
+        except TimeoutException as e:
+            print("Error:", e)
+            print("No more classes found, export complete")
+            print("Goodbye")
+            break
 
         except NoSuchElementException as e:
             print("Error:", e)
