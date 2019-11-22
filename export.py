@@ -1,14 +1,10 @@
 import getpass
 import os
 import sys
-import time
+from time import sleep
 import yaml 
-import re
-from pprint import pprint
 
 import pandas as pd
-
-# from bs4 import BeautifulSoup as bs
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -38,7 +34,6 @@ def data_config(yaml_file : str):
 def main():
 
     # Config Stuff
-
     config = data_config('config.yaml')
 
     username = config['username']
@@ -56,13 +51,11 @@ def main():
         os.mkdir(downloadPath)
 
 
-    # Create the web driver (Firefox)
-
-    # Firefox only runs in headless mode for some reason and I can't be bothered to try and figure it out anymore
+    # Create the web driver
+    # Firefox only runs in headless mode for some reason and I can't be damned to figure out why
+    # (This on Pop! OS 19.10)
     options = Options()
     options.headless = True
-
-    print(os.path.join(os.getcwd(), 'drivers/geckodriver'))
     driver = webdriver.Firefox(options=options,
             executable_path=os.path.join(os.getcwd(), 'drivers/geckodriver'))
 
@@ -75,8 +68,7 @@ def main():
     userField = wait.until(EC.presence_of_element_located((By.ID, "userid")))
     passField = driver.find_element_by_id("pwd")
 
-    print("User Text field found")
-
+    print("Logging into resource...")
     # Clear the fields and enter the username and password
     userField.clear()
     passField.clear()
@@ -132,9 +124,9 @@ def main():
     # In the "My Teaching Schedule" loop through the classes & sections
     # As of 09/11/2019, the first TR containing a class is ID'd as "trINSTR_CLASS_VW$0_row1"
 
-    print("Finding row")
     wait.until(EC.presence_of_element_located((By.ID, "trINSTR_CLASS_VW$0_row1")))
 
+    print("Cycling through classes and exporting rosters...")
     while True:
         try: 
             # Go through the classes in the table
@@ -148,12 +140,6 @@ def main():
 
 
             classTable = driver.find_element_by_xpath("//table[@id='CLASS_ROSTER_VW$scroll$0']//table[@class='PSLEVEL1GRID']")
-
-            # tableSoup = bs(classTable.get_attribute('innerHTML'), 'html.parser')
-
-            # with open(os.path.join(downloadPath, className), 'w') as f:
-            #     f.write(classTable.get_attribute('innerHTML'))
-
             tableData = pd.read_html(classTable.get_attribute('outerHTML'))
 
             emailElms = driver.find_elements_by_xpath("//a[starts-with(@id, 'EMAIL_LINK$')]")
@@ -174,25 +160,21 @@ def main():
             tableData = tableData.set_index('ID')
 
             tableData.to_csv(os.path.join(downloadPath, className))
-
-            # os.rename(os.path.join(downloadPath, "ps.xls"),
-            #             os.path.join(downloadPath, className))
-
-            time.sleep(3)
+            
+            # Sleep just cause I feel bad for spamming the server (but not really)
+            sleep(3)
 
             # Click the change class button and go to the next class
             classRosterNum += 1
             driver.find_element_by_id("DERIVED_SSR_FC_SSS_CHG_CLS_LINK").click()
             
         # TODO: I changed to wait until the class was found for some reason instea of just clicking on it.
-        except TimeoutException as e:
-            print("Error:", e)
+        except TimeoutException:
             print("No more classes found, export complete")
             print("Goodbye")
             break
 
-        except NoSuchElementException as e:
-            print("Error:", e)
+        except NoSuchElementException:
             print("No more classes found...")
             print("Script closing")
             break

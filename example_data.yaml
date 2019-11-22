@@ -2,6 +2,6 @@
 # I mean, YAML
 username: 
 password: 
-download_path: # no need to escape backslashes in paths in yaml :-)
-base_uri: 
-semester: 
+download_path: 
+base_uri: https://myku.kutztown.edu
+semester: # Full name (i.e 2202 - Spring 2020)
