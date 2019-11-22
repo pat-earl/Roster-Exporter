@@ -167,7 +167,11 @@ def main():
             emailSeries = pd.Series(emailList)
             
             tableData = tableData[0]
-            tableData['emails'] = emailSeries
+            tableData['Student Email'] = emailSeries
+
+            # Drop columns
+            tableData = tableData.drop(["Unnamed: 0", "Notify", "Photo", "Units", "Student Services Center"], axis=1)
+            tableData = tableData.set_index('ID')
 
             tableData.to_csv(os.path.join(downloadPath, className))
 
